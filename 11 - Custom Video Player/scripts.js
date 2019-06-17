@@ -47,16 +47,20 @@ function toggleFullScreen() {
 }
 
 //hook up event listeners
-//for play/pause
+//for play/pause on the video
 video.addEventListener("click", togglePlay);
 video.addEventListener("play", updateButton);
 video.addEventListener("pause", updateButton);
+//for play/pause on the toggle button
 toggle.addEventListener("click", togglePlay);
+
 //for skip
 skipButtons.forEach(button => button.addEventListener("click", skip));
+
 //for the range buttons, mousemove lets it change in real time
 ranges.forEach(range => range.addEventListener("change", handleRangeUpdate));
 ranges.forEach(range => range.addEventListener("mousemove", handleRangeUpdate));
+
 //for progress bar
 video.addEventListener("timeupdate", handleProgress);
 //for moving the progress bar by hand and updating the video real time
@@ -67,3 +71,10 @@ progress.addEventListener("mousedown", () => (mousedown = true));
 progress.addEventListener("mouseup", () => (mousedown = false));
 
 fullScreenBtn.addEventListener("click", toggleFullScreen);
+
+//toggle using space bar
+document.body.onkeydown = function(e) {
+  if (e.keyCode === 32) {
+    togglePlay();
+  }
+};
