@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+s<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -43,6 +43,7 @@
   </div>
 
   <script>
+  //debouncing  only run the function at most for however many seconds; for checkSlide function, will only run it every few seconds; prevents too many fires
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -58,6 +59,28 @@
       };
     }
 
+    //select all imgs to listen for
+    const sliderImages = document.querySelectorAll('.slide-in')
+    function checkSlide(e) {
+      //when image is "peaking" then want to animate in
+      sliderImages.forEach(sliderImage => {
+        //half way through the image
+        const slideInAt = (window.scrollY + window.innerHeight) - sliderImage.height / 2;
+        //bottom of the image
+        const imageBottom = sliderImage.offsetTop + sliderImage.height;
+        const isHalfShown = slideInAt > sliderImage.offsetTop;
+        const isNotScrolledPast = window.scrollY < imageBottom;
+          console.log(isHalfShown)
+
+        if (isHalfShown && isNotScrolledPast) {
+          sliderImage.classList.add('active');
+        } else {
+          sliderImage.classList.remove('active');
+        }
+      })
+    }
+    window.addEventListener('scroll', debounce(checkSlide))
+
   </script>
 
   <style>
@@ -68,11 +91,11 @@
       font-size: 20px;
       font-weight: 200;
     }
-    
+
     body {
       margin: 0;
     }
-    
+
     *, *:before, *:after {
       box-sizing: inherit;
     }
@@ -107,7 +130,7 @@
     .align-left.slide-in {
       transform: translateX(-30%) scale(0.95);
     }
-    
+
     .align-right.slide-in {
       transform: translateX(30%) scale(0.95);
     }
